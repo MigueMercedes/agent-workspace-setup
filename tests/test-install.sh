@@ -23,6 +23,15 @@ if AGENT_SETUP_CODEX_HOME="$sandbox/root-link" bash "$source_repo/install.sh" --
   printf 'accepted symlink to root\n' >&2
   exit 1
 fi
+mkdir -p "$sandbox/skills-root"
+ln -s / "$sandbox/skills-root/skills"
+printf '%s\n' preserved > "$sandbox/agent-workspace-setup"
+preserved_before=$(sha256sum "$sandbox/agent-workspace-setup")
+if AGENT_SETUP_CODEX_HOME="$sandbox/skills-root" bash "$source_repo/install.sh" --codex --dry-run --yes >/dev/null 2>&1; then
+  printf 'accepted skills symlink to root\n' >&2
+  exit 1
+fi
+[[ "$preserved_before" == "$(sha256sum "$sandbox/agent-workspace-setup")" ]]
 
 bin="$sandbox/bin"
 mkdir "$bin"

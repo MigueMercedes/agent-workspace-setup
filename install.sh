@@ -51,14 +51,26 @@ PY
 codex_root=$(canonical_root "$codex_root")
 claude_root=$(canonical_root "$claude_root")
 
+destination_for() {
+  python3 - "$1" <<'PY'
+import os
+import sys
+root = os.path.realpath(sys.argv[1])
+parent = os.path.realpath(os.path.join(root, "skills"))
+destination = os.path.realpath(os.path.join(parent, "agent-workspace-setup"))
+if parent == os.path.sep or os.path.commonpath((root, destination)) != root:
+    raise SystemExit(2)
+print(destination)
+PY
+}
+
 install_one() {
   label=$1
   root=$2
   [[ -n "$root" ]] || { printf 'error: unsafe %s root\n' "$label" >&2; exit 2; }
   [[ "$root" != / ]] || { printf 'error: unsafe %s root\n' "$label" >&2; exit 2; }
-  parent="$root/skills"
-  destination="$parent/agent-workspace-setup"
-  [[ "$destination" == */skills/agent-workspace-setup ]] || exit 2
+  parent=$(dirname "$(destination_for "$root")")
+  destination=$(destination_for "$root")
   printf '%s: %s\n' "$label" "$destination"
   $dry_run && return 0
   if [[ ( -e "$destination" || -L "$destination" ) ]] && ! $assume_yes; then
@@ -76,11 +88,11 @@ install_one() {
 
 preview() {
   case "$runtime" in
-    --codex) printf 'Codex: %s/skills/agent-workspace-setup\n' "$codex_root" ;;
-    --claude) printf 'Claude: %s/skills/agent-workspace-setup\n' "$claude_root" ;;
+    --codex) printf 'Codex: %s\n' "$(destination_for "$codex_root")" ;;
+    --claude) printf 'Claude: %s\n' "$(destination_for "$claude_root")" ;;
     --all)
-      printf 'Codex: %s/skills/agent-workspace-setup\n' "$codex_root"
-      printf 'Claude: %s/skills/agent-workspace-setup\n' "$claude_root"
+      printf 'Codex: %s\n' "$(destination_for "$codex_root")"
+      printf 'Claude: %s\n' "$(destination_for "$claude_root")"
       ;;
   esac
 }

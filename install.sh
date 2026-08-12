@@ -43,7 +43,8 @@ canonical_root() {
   python3 - "$1" <<'PY'
 import os
 import sys
-print(os.path.realpath(os.path.abspath(os.path.expanduser(sys.argv[1]))))
+root = os.path.realpath(os.path.abspath(os.path.expanduser(sys.argv[1])))
+print(os.path.sep if os.path.exists(root) and os.path.samefile(root, os.path.sep) else root)
 PY
 }
 

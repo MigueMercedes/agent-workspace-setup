@@ -23,6 +23,14 @@ cmp "$source_repo/skills/agent-workspace-setup/SKILL.md" \
 cmp "$source_repo/skills/agent-workspace-setup/SKILL.md" \
   "$AGENT_SETUP_CLAUDE_HOME/skills/agent-workspace-setup/SKILL.md"
 
+rm -rf "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup"
+ln -s "$sandbox/missing-target" \
+  "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup"
+printf 'n\n' | bash "$source_repo/install.sh" --codex
+[[ -L "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup" ]]
+
+rm "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup"
+mkdir -p "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup"
 printf '%s\n' stale > "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup/stale.txt"
 bash "$source_repo/install.sh" --codex --yes
 [[ ! -e "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup/stale.txt" ]]

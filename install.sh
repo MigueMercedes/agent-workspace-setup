@@ -44,7 +44,7 @@ PY
   [[ "$destination" == */skills/agent-workspace-setup ]] || exit 2
   printf '%s: %s\n' "$label" "$destination"
   $dry_run && return 0
-  if [[ -e "$destination" ]] && ! $assume_yes; then
+  if [[ ( -e "$destination" || -L "$destination" ) ]] && ! $assume_yes; then
     read -r -p "Replace existing $label skill? [y/N] " answer
     [[ "$answer" == y || "$answer" == Y ]] || return 0
   fi

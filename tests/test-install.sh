@@ -12,6 +12,27 @@ printf '%s\n' '---' 'name: agent-workspace-setup' \
 export AGENT_SETUP_CODEX_HOME="$sandbox/codex"
 export AGENT_SETUP_CLAUDE_HOME="$sandbox/claude"
 
+for unsafe in / //; do
+  if AGENT_SETUP_CODEX_HOME="$unsafe" bash "$source_repo/install.sh" --codex --dry-run --yes >/dev/null 2>&1; then
+    printf 'accepted unsafe root: %s\n' "$unsafe" >&2
+    exit 1
+  fi
+done
+ln -s / "$sandbox/root-link"
+if AGENT_SETUP_CODEX_HOME="$sandbox/root-link" bash "$source_repo/install.sh" --codex --dry-run --yes >/dev/null 2>&1; then
+  printf 'accepted symlink to root\n' >&2
+  exit 1
+fi
+
+bin="$sandbox/bin"
+mkdir "$bin"
+printf '%s\n' '#!/usr/bin/env bash' 'exit 0' > "$bin/codex"
+chmod +x "$bin/codex"
+detected=$(printf 'n\n' | PATH="$bin:/usr/bin:/bin" bash "$source_repo/install.sh")
+grep -Fq "Codex: $AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup" <<<"$detected"
+! grep -Fq 'Claude:' <<<"$detected"
+grep -Fq 'Install to these destinations? [y/N]' <<<"$detected"
+
 dry_output=$(bash "$source_repo/install.sh" --all --dry-run --yes)
 grep -Fq "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup" <<<"$dry_output"
 grep -Fq "$AGENT_SETUP_CLAUDE_HOME/skills/agent-workspace-setup" <<<"$dry_output"

@@ -6,9 +6,10 @@ manifests, documented commands, automation, and short project documentation.
 
 ## Route
 
-- `bootstrap`: the target has no meaningful project content or agent policy.
-- `adopt`: any project content, instruction file, or established workflow
-  exists. Adoption preserves current work and starts from the existing policy.
+- `bootstrap`: a new or nearly empty directory that is not yet an existing Git
+  repository.
+- `adopt`: any existing Git repository, code, project content, instruction file,
+  or established workflow. Adoption does not require prior agent instructions.
 
 For a parent with nested or sibling repositories, map every Git root. Treat
 each root as a separate mutation boundary even when the repositories form one

@@ -1,5 +1,9 @@
 # Behavior scenario evidence
 
+> Superseded for current behavior claims. Preserve these historical runs
+> unchanged; see [`transcripts/README.md`](transcripts/README.md) for the current
+> skill-hash-keyed evidence set.
+
 Fresh audit runs use disposable fixtures and retain command-level transcripts.
 No skill was installed globally. The transcript is the evidence source; this
 file is the result index.

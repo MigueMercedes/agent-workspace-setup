@@ -18,26 +18,42 @@ while (($#)); do
     --dry-run) dry_run=true ;;
     --yes) assume_yes=true ;;
     -h|--help)
-      printf 'Usage: %s (--codex|--claude|--all) [--dry-run] [--yes]\n' "$0"
+      printf 'Usage: %s [--codex|--claude|--all] [--dry-run] [--yes]\n' "$0"
       exit 0
       ;;
     *) printf 'error: unknown option: %s\n' "$1" >&2; exit 2 ;;
   esac
   shift
 done
-[[ -n "$runtime" ]] || { printf 'error: choose a runtime\n' >&2; exit 2; }
 [[ -f "$source_dir/SKILL.md" ]] || { printf 'error: source skill missing\n' >&2; exit 2; }
+
+if [[ -z "$runtime" ]]; then
+  has_codex=false
+  has_claude=false
+  command -v codex >/dev/null 2>&1 && has_codex=true
+  command -v claude >/dev/null 2>&1 && has_claude=true
+  if "$has_codex" && "$has_claude"; then runtime=--all
+  elif "$has_codex"; then runtime=--codex
+  elif "$has_claude"; then runtime=--claude
+  else printf 'error: no supported runtime detected\n' >&2; exit 2
+  fi
+fi
+
+canonical_root() {
+  python3 - "$1" <<'PY'
+import os
+import sys
+print(os.path.realpath(os.path.abspath(os.path.expanduser(sys.argv[1]))))
+PY
+}
+
+codex_root=$(canonical_root "$codex_root")
+claude_root=$(canonical_root "$claude_root")
 
 install_one() {
   label=$1
   root=$2
   [[ -n "$root" ]] || { printf 'error: unsafe %s root\n' "$label" >&2; exit 2; }
-  root=$(python3 - "$root" <<'PY'
-import os
-import sys
-print(os.path.abspath(os.path.expanduser(sys.argv[1])))
-PY
-)
   [[ "$root" != / ]] || { printf 'error: unsafe %s root\n' "$label" >&2; exit 2; }
   parent="$root/skills"
   destination="$parent/agent-workspace-setup"
@@ -56,6 +72,24 @@ PY
   rm -rf "$destination"
   mv "$stage" "$destination"
 }
+
+preview() {
+  case "$runtime" in
+    --codex) printf 'Codex: %s/skills/agent-workspace-setup\n' "$codex_root" ;;
+    --claude) printf 'Claude: %s/skills/agent-workspace-setup\n' "$claude_root" ;;
+    --all)
+      printf 'Codex: %s/skills/agent-workspace-setup\n' "$codex_root"
+      printf 'Claude: %s/skills/agent-workspace-setup\n' "$claude_root"
+      ;;
+  esac
+}
+
+if ! "$assume_yes" && ! "$dry_run"; then
+  preview
+  printf 'Install to these destinations? [y/N] '
+  read -r answer
+  [[ "$answer" == y || "$answer" == Y ]] || exit 0
+fi
 
 case "$runtime" in
   --codex) install_one Codex "$codex_root" ;;

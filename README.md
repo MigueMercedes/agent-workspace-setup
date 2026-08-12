@@ -15,27 +15,40 @@ Supported runtimes: **Codex** and **Claude Code**.
 ```bash
 git clone https://github.com/MigueMercedes/agent-workspace-setup.git
 cd agent-workspace-setup
-./install.sh --all
+./install.sh
 ```
 
+With no selector, the installer detects available Codex and Claude runtimes,
+previews their exact destinations, and asks once before installing. Use
+`--codex`, `--claude`, or `--all` to select explicitly.
+
 Restart the relevant agent after installation, then invoke it in a repository:
+
+Codex:
 
 ```text
 $agent-workspace-setup
 Prepare this repository for Codex and Claude Code.
 ```
 
+Claude Code:
+
 ```text
-$agent-workspace-setup
+/agent-workspace-setup
 Audit the existing AGENTS.md and CLAUDE.md, then propose minimal updates.
 ```
 
+Claude Code discovers personal skills under `~/.claude/skills/` and invokes a
+named skill with `/skill-name`; see the official
+[Claude Code skills documentation](https://code.claude.com/docs/en/skills).
+
 ## Bootstrap or adopt
 
-- **Bootstrap** is for a repository without agent instructions. The skill
-  inspects its code, commands, and automation before proposing new files.
-- **Adopt** is for a repository with instructions already. The skill preserves
-  those rules, reports conflicts, and proposes only evidence-backed edits.
+- **Bootstrap** is for a new or nearly empty directory that is not yet an
+  existing Git repository.
+- **Adopt** is for any existing repository, including one without agent
+  instructions. The skill preserves current work, reports conflicts, and
+  proposes only evidence-backed edits.
 
 ## Approval boundaries
 

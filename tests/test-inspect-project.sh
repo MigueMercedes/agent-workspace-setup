@@ -26,9 +26,18 @@ grep -Fq 'package.json' <<<"$output"
 grep -Fq '.github/workflows/ci.yml' <<<"$output"
 grep -Fq 'test: vitest run' <<<"$output"
 grep -Fq 'lint: eslint .' <<<"$output"
+candidate_commands=${output#*'## Candidate commands'}
+grep -Fq 'test: vitest run' <<<"$candidate_commands"
+grep -Fq 'lint: eslint .' <<<"$candidate_commands"
 for heading in Repository Git 'Agent files' Manifests Automation 'Candidate commands'; do
   grep -Fq "## $heading" <<<"$output"
 done
+
+existing_empty=$(mktemp -d)
+git -C "$existing_empty" init -q
+existing_output=$("$repo_root/skills/agent-workspace-setup/scripts/inspect-project.sh" "$existing_empty")
+grep -Fq 'Route candidate: adopt' <<<"$existing_output"
+rm -rf "$existing_empty"
 grep -Fq 'a/b/AGENTS.md' <<<"$output"
 ! grep -Fq 'a/b/c/AGENTS.md' <<<"$output"
 grep -Fq 'a/b/c/Makefile' <<<"$output"
@@ -51,3 +60,15 @@ malformed_status=$?
 set -e
 rm -rf "$malformed_fixture"
 test "$malformed_status" -ne 0
+
+blocked_fixture=$(mktemp -d)
+mkdir "$blocked_fixture/private"
+printf '%s\n' hidden > "$blocked_fixture/private/AGENTS.md"
+chmod 000 "$blocked_fixture/private"
+set +e
+"$repo_root/skills/agent-workspace-setup/scripts/inspect-project.sh" "$blocked_fixture" >/dev/null 2>&1
+blocked_status=$?
+set -e
+chmod 700 "$blocked_fixture/private"
+rm -rf "$blocked_fixture"
+test "$blocked_status" -ne 0

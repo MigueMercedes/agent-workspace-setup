@@ -24,6 +24,15 @@ Put enforceable Claude Code configuration in its native owner:
 - project skills: `.claude/skills/<name>/SKILL.md`;
 - MCP tool connections: `.mcp.json`.
 
+The proposal must explicitly decide whether `.claude/agents/*.md` are needed.
+When needed, list each role, supported `model`, supported `effort`, tools or
+permissions, `isolation: worktree` where implementation writes occur, and the
+project evidence for the role. When they add no value over built-in delegation
+plus `AGENTS.md`, state that none are needed. Use only values verified against
+the effective Claude Code runtime; current syntax is documented at
+https://code.claude.com/docs/en/sub-agents and model availability at
+https://code.claude.com/docs/en/model-config.
+
 Classify any file or action that installs, downloads, enables, registers, or
 configures a third-party tool, plugin, skill, or MCP server as a pending
 installation target. This includes `.mcp.json`, plugin entries in settings, and
@@ -41,5 +50,7 @@ Do not repeat project policy from `AGENTS.md` in `CLAUDE.md` or configuration
 files.
 
 Completion criterion: `CLAUDE.md` resolves its shared-policy import, contains
-only Claude-specific instructions, and every Claude configuration target has a
-repository-backed reason, the correct approval class, and no credential value.
+only Claude-specific instructions, the proposal explicitly accounts for Claude
+subagent files, and every Claude configuration target has a repository-backed
+reason, the correct approval class, supported model/effort values, and no
+credential value.

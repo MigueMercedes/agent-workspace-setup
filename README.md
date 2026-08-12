@@ -1,12 +1,27 @@
 # Agent Workspace Setup
 
-Set up repository-specific instructions for Codex and Claude Code from the
-repository's own evidence—without copying rules from another project.
+Bring a proven multi-agent engineering workflow to any repository, adapted to
+the Codex and Claude Code capabilities actually available there.
 
-Prompts and hand-written templates drift: a generic setup can overwrite local
-conventions, miss existing automation, or install tools without a clear
-approval boundary. This skill inspects first, then proposes the smallest
-repository-scoped change.
+The skill makes the orchestrator own decomposition, adaptive model/effort
+routing, independent review, synthesis, and fresh verification. It delegates
+only bounded work, parallelizes only non-overlapping tasks, isolates
+implementation in worktrees, escalates repeated failures, and safely removes
+only completed integrated worktrees. It inspects first so adoption preserves
+stronger local rules and never invents unavailable models.
+
+The shared workflow is written to `AGENTS.md`; `CLAUDE.md` remains a thin
+Claude-specific import. When justified and approved, the proposal can add
+native project agents under `.codex/agents/*.toml` or
+`.claude/agents/*.md`—never by copying one runtime's configuration into the
+other.
+
+Official runtime references:
+
+- [Codex subagents and project custom-agent configuration](https://developers.openai.com/codex/multi-agent)
+- [OpenAI model and reasoning guidance](https://developers.openai.com/api/docs/guides/latest-model)
+- [Claude Code custom subagents](https://code.claude.com/docs/en/sub-agents)
+- [Claude Code models and effort levels](https://code.claude.com/docs/en/model-config)
 
 ## Use it
 
@@ -49,6 +64,19 @@ named skill with `/skill-name`; see the official
 - **Adopt** is for any existing repository, including one without agent
   instructions. The skill preserves current work, reports conflicts, and
   proposes only evidence-backed edits.
+
+## Generated workflow
+
+Every proposal contains a required **Workflow** section covering:
+
+- when the orchestrator works directly and when it delegates;
+- which tasks may run in parallel;
+- cheap/fast, balanced, and strongest model/effort tiers, using only available
+  runtime values;
+- isolated implementer work, independent specification and quality review, a
+  bounded fix/escalation loop, and final whole-change review;
+- fresh final verification and conservative worktree cleanup;
+- whether native Codex or Claude project-agent files are actually needed.
 
 ## Approval boundaries
 

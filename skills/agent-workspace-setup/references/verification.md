@@ -12,7 +12,15 @@ Verify each approved repository independently.
    correct.
 5. Re-read instruction files in effective scope. Report duplicated or
    contradictory rules, or explicitly report `none`.
-6. Scan every generated tracked file and its diff for likely credentials:
+6. Check the effective workflow against [`workflow.md`](workflow.md): every
+   required component exists, stronger pre-existing rules remain, runtime files
+   use supported model/effort values, and `CLAUDE.md` stays thin.
+7. Run focused task checks, independent task review, and whole-change review as
+   approved. Then run fresh verification from the final working tree; earlier
+   agent reports are evidence inputs, not completion proof.
+8. Remove only owned, completed, and integrated worktrees that are clean.
+   Preserve and report dirty, unmerged, foreign, or ambiguous worktrees.
+9. Scan every generated tracked file and its diff for likely credentials:
    secret assignments, access tokens, passwords, private keys, authorization
    headers, and high-entropy values. Confirm sensitive settings use runtime
    references or redacted examples and report any scanner limitations.
@@ -24,6 +32,6 @@ The final report has two lists:
 
 Do not turn an unrun command into an inferred success.
 
-Completion criterion: all approved targets pass syntax, link, ownership,
-contradiction, dirty-tree, and likely-secret checks; every actual command has
-evidence; every remaining check is explicitly unverified.
+Completion criterion: all approved targets pass workflow, syntax, link,
+ownership, contradiction, dirty-tree, and likely-secret checks; fresh commands
+have evidence; every remaining check is explicitly unverified.

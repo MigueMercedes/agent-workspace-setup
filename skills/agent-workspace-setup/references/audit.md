@@ -3,6 +3,9 @@
 Run the inspector once per repository root. Then read only sources needed to
 validate its facts: existing agent files, `git status` and relevant diffs,
 manifests, documented commands, automation, and short project documentation.
+Audit existing orchestration policy and native definitions under
+`.codex/agents/` and `.claude/agents/`, including their model, effort, isolation,
+review, escalation, verification, and worktree-cleanup rules.
 
 ## Route
 
@@ -24,6 +27,8 @@ For each root, record:
 - existing `AGENTS.md`, `CLAUDE.md`, and scoped instruction files;
 - commands supported by manifests, automation, or current documentation;
 - overlap and contradictions between instruction sources, or `none`;
+- existing delegation workflow, runtime capabilities actually observed, and
+  stronger rules that the proposal must preserve;
 - exact targets and which repository owns each target.
 
 Label repository-derived statements as **facts**. Label proposed conventions,

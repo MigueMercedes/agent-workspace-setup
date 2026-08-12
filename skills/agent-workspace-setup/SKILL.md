@@ -5,14 +5,17 @@ description: Use when preparing a new repository or adopting an existing reposit
 
 # Agent Workspace Setup
 
-Set up agent instructions from repository evidence. A setup request starts a
-proposal; approval authorizes the exact listed mutations.
+Install a durable agentic workflow from repository evidence. The workflow is
+the product; `AGENTS.md`, `CLAUDE.md`, and optional runtime agent files are its
+project-specific delivery mechanism. A setup request starts a proposal;
+approval authorizes the exact listed mutations.
 
 ## Required gate
 
 1. Run [`scripts/inspect-project.sh`](scripts/inspect-project.sh) for every
    repository in scope and read relevant repository sources.
-2. Select `bootstrap` or `adopt`; load [`references/audit.md`](references/audit.md).
+2. Select `bootstrap` or `adopt`; load [`references/audit.md`](references/audit.md)
+   and [`references/workflow.md`](references/workflow.md).
 3. Present the proposal contract below and stop for explicit approval per
    repository. Do not write, initialize Git, or change configuration before it.
 4. Apply only approved policy and instruction edits using
@@ -36,6 +39,25 @@ Present these fields in order:
 - **Evidence:** sources read, dirty state, existing rules, conflicts or an
   explicit `none`.
 - **Targets:** exact files to create or edit, grouped by repository.
+- **Workflow:** include these labeled subfields:
+  - **Orchestrator:** ownership of decomposition, routing, review, verification,
+    and synthesis.
+  - **Delegation:** direct-work threshold, bounded task contract, fresh
+    implementer where applicable, worktree isolation, user-change preservation,
+    and non-overlapping parallelism boundary.
+  - **Routing:** available capability tiers, exact supported effort levels or
+    an explicit `unverified`, the least-capable-reliable default, and escalation
+    triggers. Always include the three-row cheap/fast, balanced, and strongest
+    decision matrix from `workflow.md`; its effort labels remain target profiles
+    when support is unverified. Persist no model or effort value until the
+    runtime proves it.
+  - **Task loop:** focused checks, independent specification review, independent
+    quality review, and the bounded fix/escalation limit.
+  - **Completion:** independent whole-change review, fresh final verification,
+    and conservative cleanup of owned integrated worktrees.
+  - **Runtime targets:** exact Codex and Claude files or an explicit reason each
+    runtime needs none. Name `.codex/agents/*.toml` and
+    `.claude/agents/*.md` explicitly. `CLAUDE.md` remains thin.
 - **Rules:** shared policy and runtime-only additions, with their evidence.
 - **Optional installations:** exact pending files and actions, purpose, scope,
   and credential source, or `none`.

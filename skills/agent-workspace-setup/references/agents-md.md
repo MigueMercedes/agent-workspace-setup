@@ -4,12 +4,17 @@
 smallest file that changes agent behavior; retain existing rules unless the
 approved proposal names their replacement.
 
-Include only evidenced, durable content:
+Include the shared workflow from [`workflow.md`](workflow.md), adapted to the
+project and merged with stronger existing policy. `AGENTS.md` must make the
+orchestrator, delegation threshold, parallelism boundary, routing matrix,
+review/fix loop, fresh verification, and worktree lifecycle durable without
+depending on this skill remaining installed.
+
+Also include only evidenced, durable project content:
 
 - scope and precedence where nested instruction files exist;
 - verified build, test, lint, formatting, and release commands;
 - safety, security, data, architecture, or product invariants;
-- delegation rules that the project actually requires;
 - the verification gate and what must be reported as unverified;
 - pointers to detailed documentation for progressive disclosure.
 
@@ -21,5 +26,6 @@ directory listings, generated files, or tool help. Do not copy runtime-specific
 configuration into shared policy. Keep commands only when their source and
 working directory are known; run them during verification when safe.
 
-Completion criterion: every retained rule is durable, scoped, evidenced, and
-not a duplicate of discoverable facts or runtime-only configuration.
+Completion criterion: the shared workflow is complete, every project rule is
+durable, scoped, evidenced, and not a duplicate of discoverable facts or
+runtime-only configuration; stronger existing workflow rules remain intact.

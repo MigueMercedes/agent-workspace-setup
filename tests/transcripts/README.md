@@ -11,6 +11,19 @@ remain factual history but are superseded for current behavior claims.
 
 ## Current set
 
+The v2 workflow evidence is keyed by this exact skill-tree hash:
+
+```text
+sha256: 4b7b5b8392adafeeab6245b5bb66da0dc44ca0d1f7f865255b0262b1adbd5f6f
+```
+
+- `current/workflow-contract-v2.md`: fresh RED run showing the old skill omitted
+  the orchestration workflow.
+- `current/workflow-contract-v2-green.md`: fresh GREEN run showing the updated
+  skill produced the complete required workflow proposal.
+
+The earlier approval-boundary evidence remains keyed by its original hash:
+
 Current evidence is keyed by the exact skill-tree hash:
 
 ```text

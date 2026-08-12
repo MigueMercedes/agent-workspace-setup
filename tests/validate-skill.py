@@ -30,12 +30,56 @@ required = [
     "references/audit.md",
     "references/agents-md.md",
     "references/claude-md.md",
+    "references/workflow.md",
     "references/verification.md",
     "scripts/inspect-project.sh",
 ]
 for relative in required:
     if not (skill_dir / relative).is_file():
         failures.append(f"missing required file: {relative}")
+
+workflow_file = skill_dir / "references" / "workflow.md"
+workflow_text = workflow_file.read_text(encoding="utf-8") if workflow_file.is_file() else ""
+workflow_contract = {
+    "orchestrator ownership": "decomposition, routing, review, verification, and synthesis",
+    "delegation threshold": "Keep trivial and small work in the orchestrator",
+    "parallelism boundary": "non-overlapping files and mutable state",
+    "adaptive routing": "least capable available tier that can reliably complete the task",
+    "unverified routing": "persist no exact model identifier or effort value",
+    "mechanical routing tier": "cheap/fast",
+    "balanced routing tier": "balanced",
+    "strongest routing tier": "strongest",
+    "worktree isolation": "isolated worktree",
+    "user-change preservation": "Preserve user changes",
+    "fresh implementer": "fresh implementer for each delegated",
+    "specification review": "independent specification reviewer",
+    "quality review": "independent quality reviewer",
+    "bounded escalation": "bounded fix loop",
+    "whole-change review": "whole-change review",
+    "fresh verification": "fresh verification",
+    "safe cleanup": "owned, completed, and integrated worktrees",
+    "Claude target": ".claude/agents/*.md",
+    "Codex target": ".codex/agents/*.toml",
+}
+for label, phrase in workflow_contract.items():
+    if phrase not in workflow_text:
+        failures.append(f"workflow contract missing {label}: {phrase}")
+
+proposal_contract = {
+    "Workflow field": "- **Workflow:**",
+    "Orchestrator field": "- **Orchestrator:**",
+    "Delegation field": "- **Delegation:**",
+    "Routing field": "- **Routing:**",
+    "Task loop field": "- **Task loop:**",
+    "Completion field": "- **Completion:**",
+    "Runtime targets field": "- **Runtime targets:**",
+    "routing matrix": "three-row cheap/fast, balanced, and strongest",
+    "Codex runtime target": ".codex/agents/*.toml",
+    "Claude runtime target": ".claude/agents/*.md",
+}
+for label, phrase in proposal_contract.items():
+    if phrase not in skill_text:
+        failures.append(f"proposal contract missing {label}: {phrase}")
 
 for raw_target in re.findall(r"!?\[[^\]]*\]\(([^)]+)\)", skill_text):
     target_text = raw_target.strip().strip("<>").split("#", 1)[0]

@@ -57,10 +57,9 @@ import os
 import sys
 root = os.path.realpath(sys.argv[1])
 parent = os.path.realpath(os.path.join(root, "skills"))
-destination = os.path.realpath(os.path.join(parent, "agent-workspace-setup"))
-if parent == os.path.sep or os.path.commonpath((root, destination)) != root:
+if parent == os.path.sep or os.path.commonpath((root, parent)) != root:
     raise SystemExit(2)
-print(destination)
+print(os.path.join(parent, "agent-workspace-setup"))
 PY
 }
 

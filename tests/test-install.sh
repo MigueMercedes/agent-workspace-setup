@@ -33,6 +33,25 @@ if AGENT_SETUP_CODEX_HOME="$sandbox/skills-root" bash "$source_repo/install.sh" 
 fi
 [[ "$preserved_before" == "$(sha256sum "$sandbox/agent-workspace-setup")" ]]
 
+mkdir -p "$AGENT_SETUP_CODEX_HOME/unrelated"
+printf '%s\n' protected > "$AGENT_SETUP_CODEX_HOME/unrelated/data"
+mkdir -p "$AGENT_SETUP_CODEX_HOME/skills"
+ln -s "$AGENT_SETUP_CODEX_HOME/unrelated" \
+  "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup"
+protected_before=$(sha256sum "$AGENT_SETUP_CODEX_HOME/unrelated/data")
+bash "$source_repo/install.sh" --codex --yes
+[[ "$protected_before" == "$(sha256sum "$AGENT_SETUP_CODEX_HOME/unrelated/data")" ]]
+[[ -f "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup/SKILL.md" ]]
+
+rm -rf "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup"
+ln -s "$sandbox/missing-target" \
+  "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup"
+printf 'n\n' | bash "$source_repo/install.sh" --codex
+[[ -L "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup" ]]
+printf 'y\ny\n' | bash "$source_repo/install.sh" --codex
+[[ -f "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup/SKILL.md" ]]
+rm -rf "$AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup"
+
 bin="$sandbox/bin"
 mkdir "$bin"
 printf '%s\n' '#!/usr/bin/env bash' 'exit 0' > "$bin/codex"

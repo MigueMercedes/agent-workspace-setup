@@ -52,7 +52,7 @@ for raw_target in re.findall(r"!?\[[^\]]*\]\(([^)]+)\)", skill_text):
 
 banned = re.compile(
     r"(?i)\b(?:tbd|todo|placeholder)\b|"
-    r"(?:/home/[^/\s]+|/Users/[^/\s]+|[A-Z]:\\Users\\[^\\\s]+)"
+    r"(?:/root(?:/|\b)|/home/[^/\s]+|/Users/[^/\s]+|[A-Z]:\\Users\\[^\\\s]+)"
 )
 for path in sorted(candidate for candidate in skill_dir.rglob("*") if candidate.is_file()):
     if banned.search(path.read_text(encoding="utf-8")):

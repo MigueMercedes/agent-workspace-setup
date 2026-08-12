@@ -12,6 +12,10 @@ Verify each approved repository independently.
    correct.
 5. Re-read instruction files in effective scope. Report duplicated or
    contradictory rules, or explicitly report `none`.
+6. Scan every generated tracked file and its diff for likely credentials:
+   secret assignments, access tokens, passwords, private keys, authorization
+   headers, and high-entropy values. Confirm sensitive settings use runtime
+   references or redacted examples and report any scanner limitations.
 
 The final report has two lists:
 
@@ -21,5 +25,5 @@ The final report has two lists:
 Do not turn an unrun command into an inferred success.
 
 Completion criterion: all approved targets pass syntax, link, ownership,
-contradiction, and dirty-tree checks; every actual command has evidence; every
-remaining check is explicitly unverified.
+contradiction, dirty-tree, and likely-secret checks; every actual command has
+evidence; every remaining check is explicitly unverified.

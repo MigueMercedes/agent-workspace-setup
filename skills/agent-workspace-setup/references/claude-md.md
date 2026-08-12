@@ -24,10 +24,22 @@ Put enforceable Claude Code configuration in its native owner:
 - project skills: `.claude/skills/<name>/SKILL.md`;
 - MCP tool connections: `.mcp.json`.
 
-List any such file as its own proposal target. A useful plugin, skill, or tool
-is still optional installation and needs separate approval. Do not repeat
-project policy from `AGENTS.md` in `CLAUDE.md` or configuration files.
+Classify any file or action that installs, downloads, enables, registers, or
+configures a third-party tool, plugin, skill, or MCP server as a pending
+installation target. This includes `.mcp.json`, plugin entries in settings, and
+downloaded project skills. Ordinary document-edit approval cannot authorize
+these targets; list them in the distinct installation-approval question.
+
+Tracked configuration contains environment-variable references or redacted
+example values only. Never put tokens, passwords, private keys, or other
+credentials in `.claude/settings.json`, `.mcp.json`, skills, or instructions.
+Keep credentials in the runtime's secure store, CI secret store, or a manual
+untracked local configuration. For Claude MCP configuration, use `${VAR}`
+runtime expansion instead of a value.
+
+Do not repeat project policy from `AGENTS.md` in `CLAUDE.md` or configuration
+files.
 
 Completion criterion: `CLAUDE.md` resolves its shared-policy import, contains
 only Claude-specific instructions, and every Claude configuration target has a
-repository-backed reason and approval.
+repository-backed reason, the correct approval class, and no credential value.

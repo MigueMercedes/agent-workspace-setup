@@ -15,10 +15,13 @@ proposal; approval authorizes the exact listed mutations.
 2. Select `bootstrap` or `adopt`; load [`references/audit.md`](references/audit.md).
 3. Present the proposal contract below and stop for explicit approval per
    repository. Do not write, initialize Git, or change configuration before it.
-4. Apply only approved edits using
+4. Apply only approved policy and instruction edits using
    [`references/agents-md.md`](references/agents-md.md) and
-   [`references/claude-md.md`](references/claude-md.md).
-5. Request separate approval for every tool, plugin, or skill installation.
+   [`references/claude-md.md`](references/claude-md.md). Keep all installation
+   targets pending; document-edit approval never authorizes them.
+5. Ask the distinct installation-approval question. Only after that approval
+   may you install, download, enable, register, or configure a tool, plugin,
+   skill, or MCP server.
 6. Load [`references/verification.md`](references/verification.md); report
    verified and unverified items.
 
@@ -34,11 +37,13 @@ Present these fields in order:
   explicit `none`.
 - **Targets:** exact files to create or edit, grouped by repository.
 - **Rules:** shared policy and runtime-only additions, with their evidence.
-- **Optional installations:** purpose and scope, or `none`.
+- **Optional installations:** exact pending files and actions, purpose, scope,
+  and credential source, or `none`.
 - **Checks:** exact commands and document checks to run after approval.
 - **Assumptions:** decisions not established by repository facts.
 - **Exclusions:** files, installations, and behavior intentionally untouched.
 
-End with one approval question per repository. Ask a separate installation
-question after edit approval; silence or partial approval does not approve the
-remaining targets.
+End with one edit-approval question per repository. After approved document
+edits, ask a separate installation-approval question naming every pending file
+and action. Silence, partial approval, or approval of instruction files leaves
+all installation targets pending.

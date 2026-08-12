@@ -23,13 +23,15 @@ else
   printf 'Repository: no\nWorktree: not-applicable\nBranch: not-applicable\n'
 fi
 printf '\n%s\n' '## Agent files'
-find "$target" -mindepth 1 -maxdepth 4 \( -name .git -o -name node_modules \) -prune -o \
-  -type f \( -name AGENTS.md -o -name CLAUDE.md -o -name GEMINI.md \) -print |
+{ find "$target" -mindepth 1 -maxdepth 3 \( -name .git -o -name node_modules \) -prune -o \
+  -type f \( -name AGENTS.md -o -name CLAUDE.md -o -name GEMINI.md \) -print \
+  2> >(sed 's/^/Warning: /' >&2) || true; } |
   sed "s#^$target/##" | sort
 
 printf '\n%s\n' '## Manifests'
-find "$target" -mindepth 1 -maxdepth 4 \( -name .git -o -name node_modules \) -prune -o \
-  -type f \( -name package.json -o -name pyproject.toml -o -name Cargo.toml -o -name go.mod -o -name pom.xml -o -name build.gradle -o -name requirements.txt \) -print |
+{ find "$target" -mindepth 1 -maxdepth 3 \( -name .git -o -name node_modules \) -prune -o \
+  -type f \( -name package.json -o -name pyproject.toml -o -name Cargo.toml -o -name go.mod -o -name pom.xml -o -name build.gradle -o -name requirements.txt \) -print \
+  2> >(sed 's/^/Warning: /' >&2) || true; } |
   sed "s#^$target/##" | sort
 if [[ -f "$target/package.json" ]]; then
   python3 - "$target/package.json" <<'PY'
@@ -43,8 +45,9 @@ PY
 fi
 
 printf '\n%s\n' '## Automation'
-find "$target" -mindepth 1 -maxdepth 5 \( -name .git -o -name node_modules \) -prune -o \
-  \( -type f \( -path '*/.github/workflows/*' -o -name Makefile -o -name Taskfile.yml \) \) -print |
+{ find "$target" -mindepth 1 -maxdepth 4 \( -name .git -o -name node_modules \) -prune -o \
+  \( -type f \( -path '*/.github/workflows/*' -o -name Makefile -o -name Taskfile.yml \) \) -print \
+  2> >(sed 's/^/Warning: /' >&2) || true; } |
   sed "s#^$target/##" | sort
 
 printf '\n%s\n' '## Candidate commands'

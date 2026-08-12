@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+trap 'printf "test-inspect-project failed at line %s\n" "$LINENO" >&2' ERR
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 fixture=$(mktemp -d)
 empty_fixture=$(mktemp -d)

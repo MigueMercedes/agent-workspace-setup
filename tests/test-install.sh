@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-trap 'printf "test-install failed at line %s\n" "$LINENO" >&2' ERR
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 sandbox=$(mktemp -d)
 trap 'rm -rf "$sandbox"' EXIT
@@ -30,7 +29,8 @@ mkdir "$bin"
 printf '%s\n' '#!/usr/bin/env bash' 'exit 0' > "$bin/codex"
 chmod +x "$bin/codex"
 detected=$(printf 'n\n' | PATH="$bin:/usr/bin:/bin" bash "$source_repo/install.sh")
-grep -Fq "Codex: $AGENT_SETUP_CODEX_HOME/skills/agent-workspace-setup" <<<"$detected"
+expected_codex=$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$AGENT_SETUP_CODEX_HOME")
+grep -Fq "Codex: $expected_codex/skills/agent-workspace-setup" <<<"$detected"
 ! grep -Fq 'Claude:' <<<"$detected"
 grep -Fq 'Install to these destinations? [y/N]' <<<"$detected"
 

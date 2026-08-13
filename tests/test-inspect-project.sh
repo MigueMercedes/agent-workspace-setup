@@ -21,6 +21,8 @@ printf '%s\n' dirty > "$fixture/src/change.txt"
 output=$("$repo_root/skills/agent-workspace-setup/scripts/inspect-project.sh" "$fixture")
 grep -Fq 'Route candidate: adopt' <<<"$output"
 grep -Fq 'Worktree: dirty' <<<"$output"
+grep -Fq 'HEAD: ' <<<"$output"
+grep -Fq 'Default branch candidate: master' <<<"$output"
 grep -Fq 'AGENTS.md' <<<"$output"
 grep -Fq 'package.json' <<<"$output"
 grep -Fq '.github/workflows/ci.yml' <<<"$output"
@@ -29,7 +31,7 @@ grep -Fq 'lint: eslint .' <<<"$output"
 candidate_commands=${output#*'## Candidate commands'}
 grep -Fq 'test: vitest run' <<<"$candidate_commands"
 grep -Fq 'lint: eslint .' <<<"$candidate_commands"
-for heading in Repository Git 'Agent files' Manifests Automation 'Candidate commands'; do
+for heading in Repository Git 'Agent files' 'Native agent files' Manifests Automation 'Candidate commands'; do
   grep -Fq "## $heading" <<<"$output"
 done
 
@@ -48,7 +50,8 @@ grep -Fq 'Route candidate: bootstrap' <<<"$empty_output"
 grep -Fq 'Repository: no' <<<"$empty_output"
 grep -Fq 'Worktree: not-applicable' <<<"$empty_output"
 grep -Fq 'Branch: not-applicable' <<<"$empty_output"
-for heading in Repository Git 'Agent files' Manifests Automation 'Candidate commands'; do
+grep -Fq 'HEAD: not-applicable' <<<"$empty_output"
+for heading in Repository Git 'Agent files' 'Native agent files' Manifests Automation 'Candidate commands'; do
   grep -Fq "## $heading" <<<"$empty_output"
 done
 

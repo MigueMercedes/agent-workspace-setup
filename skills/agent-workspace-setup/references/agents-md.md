@@ -1,8 +1,9 @@
 # AGENTS.md
 
 `AGENTS.md` holds durable policy shared by compatible agents. Start with the
-smallest file that changes agent behavior; retain existing rules unless the
-approved proposal names their replacement.
+smallest file that changes agent behavior. Existing rules are authoritative:
+retain them unless the proposal identifies a conflict, explains the rationale,
+and the approved replacement is demonstrably equivalent or stronger.
 
 Include the shared workflow from [`workflow.md`](workflow.md), adapted to the
 project and merged with stronger existing policy. `AGENTS.md` must make the

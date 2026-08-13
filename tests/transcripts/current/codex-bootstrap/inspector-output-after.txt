@@ -1,0 +1,22 @@
+## Repository
+Route candidate: adopt
+
+## Git
+Repository: no
+Worktree: not-applicable
+Branch: not-applicable
+HEAD: not-applicable
+Default branch candidate: not-applicable
+
+## Agent files
+AGENTS.md
+CLAUDE.md
+
+## Native agent files
+
+## Manifests
+
+## Automation
+
+## Candidate commands
+Route candidate: adopt

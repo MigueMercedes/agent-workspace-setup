@@ -19,10 +19,14 @@ printf 'Route candidate: %s\n\n' "$route"
 printf '%s\n' '## Git'
 if git -C "$target" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   [[ -n "$(git -C "$target" status --porcelain)" ]] && state=dirty || state=clean
-  printf 'Repository: yes\nWorktree: %s\nBranch: %s\n' \
-    "$state" "$(git -C "$target" branch --show-current)"
+  default_branch=$(git -C "$target" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##' || true)
+  [[ -n "$default_branch" ]] || default_branch=$(git -C "$target" branch --show-current)
+  head_commit=$(git -C "$target" rev-parse HEAD 2>/dev/null || printf 'unborn')
+  printf 'Repository: yes\nWorktree: %s\nBranch: %s\nHEAD: %s\nDefault branch candidate: %s\n' \
+    "$state" "$(git -C "$target" branch --show-current)" \
+    "$head_commit" "$default_branch"
 else
-  printf 'Repository: no\nWorktree: not-applicable\nBranch: not-applicable\n'
+  printf 'Repository: no\nWorktree: not-applicable\nBranch: not-applicable\nHEAD: not-applicable\nDefault branch candidate: not-applicable\n'
 fi
 printf '\n%s\n' '## Agent files'
 python3 - "$target" agent <<'PY'
@@ -37,6 +41,13 @@ for current, dirs, files in os.walk(root, onerror=lambda error: (_ for _ in ()).
     for name in sorted(files):
         if name in names: print(os.path.relpath(os.path.join(current, name), root))
 PY
+
+printf '\n%s\n' '## Native agent files'
+for directory in "$target/.codex/agents" "$target/.claude/agents"; do
+  if [[ -d "$directory" ]]; then
+    find "$directory" -maxdepth 1 -type f -print | sed "s#^$target/##" | sort
+  fi
+done
 
 printf '\n%s\n' '## Manifests'
 python3 - "$target" <<'PY'

@@ -3,7 +3,8 @@
 Verify each approved repository independently.
 
 1. Check Markdown structure and any runtime configuration syntax with available
-   native validators.
+   native validators. Run `scripts/validate-generated.py <repository>` for
+   `AGENTS.md`, `CLAUDE.md`, and native agent schemas.
 2. Resolve every local link and `@` import from the file that declares it.
 3. Run the approved build, test, lint, or formatting commands in their recorded
    working directories. Record exit status and meaningful output.
@@ -13,8 +14,10 @@ Verify each approved repository independently.
 5. Re-read instruction files in effective scope. Report duplicated or
    contradictory rules, or explicitly report `none`.
 6. Check the effective workflow against [`workflow.md`](workflow.md): every
-   required component exists, stronger pre-existing rules remain, runtime files
-   use supported model/effort values, and `CLAUDE.md` stays thin.
+   required component exists, stronger pre-existing rules remain, conflicts and
+   replacement rationale are explicit, runtime files use supported model/effort
+   values, every delegated write has the correct recorded base commit, and
+   `CLAUDE.md` stays thin.
 7. Run focused task checks, independent task review, and whole-change review as
    approved. Then run fresh verification from the final working tree; earlier
    agent reports are evidence inputs, not completion proof.

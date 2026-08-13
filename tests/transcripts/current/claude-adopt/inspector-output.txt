@@ -1,0 +1,25 @@
+## Repository
+Route candidate: adopt
+
+## Git
+Repository: yes
+Worktree: dirty
+Branch: master
+HEAD: 289361cd50107277ead72cafd1ec6a140a4c6a88
+Default branch candidate: master
+
+## Agent files
+AGENTS.md
+CLAUDE.md
+
+## Native agent files
+
+## Manifests
+package.json
+
+## Automation
+
+## Candidate commands
+lint: node -e "process.exit(0)"
+test: node -e "process.exit(0)"
+Route candidate: adopt

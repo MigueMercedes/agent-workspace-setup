@@ -8,3 +8,5 @@ bash tests/test-inspect-project.sh
 bash tests/test-install.sh
 bash tests/test-validate-skill.sh
 python3 tests/validate-skill.py
+python3 tests/test-generated-artifacts.py
+python3 tests/test-e2e-evidence.py

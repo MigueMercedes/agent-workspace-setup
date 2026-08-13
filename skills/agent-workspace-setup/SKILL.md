@@ -14,6 +14,8 @@ approval authorizes the exact listed mutations.
 
 1. Run [`scripts/inspect-project.sh`](scripts/inspect-project.sh) for every
    repository in scope and read relevant repository sources.
+   If no repository path or inspectable target is available, ask for it and
+   stop; a hypothetical proposal cannot satisfy the evidence gate.
 2. Select `bootstrap` or `adopt`; load [`references/audit.md`](references/audit.md)
    and [`references/workflow.md`](references/workflow.md).
 3. Present the proposal contract below and stop for explicit approval per
@@ -45,12 +47,10 @@ Present these fields in order:
   - **Delegation:** direct-work threshold, bounded task contract, fresh
     implementer where applicable, worktree isolation, user-change preservation,
     and non-overlapping parallelism boundary.
-  - **Routing:** available capability tiers, exact supported effort levels or
-    an explicit `unverified`, the least-capable-reliable default, and escalation
-    triggers. Always include the three-row cheap/fast, balanced, and strongest
-    decision matrix from `workflow.md`; its effort labels remain target profiles
-    when support is unverified. Persist no model or effort value until the
-    runtime proves it.
+  - **Routing:** available capability tiers and verified runtime values or an
+    explicit `unverified`, plus escalation triggers. Always include the semantic
+    three-row matrix from `workflow.md`. Persist no model or effort value until
+    the runtime proves it.
   - **Task loop:** focused checks, independent specification review, independent
     quality review, and the bounded fix/escalation limit.
   - **Completion:** independent whole-change review, fresh final verification,
@@ -58,6 +58,9 @@ Present these fields in order:
   - **Runtime targets:** exact Codex and Claude files or an explicit reason each
     runtime needs none. Name `.codex/agents/*.toml` and
     `.claude/agents/*.md` explicitly. `CLAUDE.md` remains thin.
+- **Rule preservation:** existing stronger rules retained; every conflict and
+  resolution rationale. Replace an existing rule only with an equivalent or
+  stronger approved rule.
 - **Rules:** shared policy and runtime-only additions, with their evidence.
 - **Optional installations:** exact pending files and actions, purpose, scope,
   and credential source, or `none`.

@@ -25,11 +25,15 @@ Put enforceable Claude Code configuration in its native owner:
 - MCP tool connections: `.mcp.json`.
 
 The proposal must explicitly decide whether `.claude/agents/*.md` are needed.
-When needed, list each role, supported `model`, supported `effort`, tools or
-permissions, `isolation: worktree` where implementation writes occur, and the
-project evidence for the role. When they add no value over built-in delegation
-plus `AGENTS.md`, state that none are needed. Use only values verified against
-the effective Claude Code runtime; current syntax is documented at
+When needed, each file has required `name`, `description`, and a non-empty
+Markdown prompt body; list supported `model`, supported `effort`, tools or
+permissions, isolation, and project evidence. Claude native `isolation:
+worktree` starts from the default branch, so use it only when that branch is the
+recorded task base. Otherwise create an explicit worktree from the validated
+parent commit and launch Claude inside it without native isolation. When agent
+files add no value over built-in delegation plus `AGENTS.md`, state that none
+are needed. Use only values verified against the effective Claude Code runtime;
+current syntax is documented at
 https://code.claude.com/docs/en/sub-agents and model availability at
 https://code.claude.com/docs/en/model-config.
 
@@ -48,6 +52,9 @@ runtime expansion instead of a value.
 
 Do not repeat project policy from `AGENTS.md` in `CLAUDE.md` or configuration
 files.
+
+Run `scripts/validate-generated.py <repository>` before presenting native agent
+files for approval and again during verification.
 
 Completion criterion: `CLAUDE.md` resolves its shared-policy import, contains
 only Claude-specific instructions, the proposal explicitly accounts for Claude

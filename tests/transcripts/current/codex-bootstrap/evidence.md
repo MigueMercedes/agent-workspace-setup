@@ -1,39 +1,32 @@
-# Codex bootstrap E2E
+# Codex bootstrap E2E round 3
 
 ## Fixture
 
-Disposable empty directory `/tmp/aws-v2-codex-bootstrap.k33P2o`. Initial
-inventory was empty. Codex CLI was `0.147.0`. The skill was copied into
-`CODEX_HOME=/tmp/aws-v2-codex-home`; no global installation occurred.
+Fresh disposable non-Git directory `/tmp/aws-v3-codex-bootstrap-empty`, empty
+before invocation. Exact construction and baseline status are in `harness.md`.
 
 ## Invocation
 
-Proposal: `CODEX_HOME=/tmp/aws-v2-codex-home codex exec --skip-git-repo-check --json -C /tmp/aws-v2-codex-bootstrap.k33P2o -o /tmp/aws-v2-codex-proposal.txt '<bootstrap prompt>'`.
-
-Approved write: `codex exec resume 019ff849-fdf6-7801-9095-6f33dfbc9a85 ... '<exact approval>'`.
-The first write was blocked by Codex's read-only inner sandbox; the same session
-was resumed without it inside the disposable, externally sandboxed fixture.
+Full commands are in `invocation.md`; exact prompt and approval are `prompt.txt`
+and `approval.txt`. No placeholders or ellipses are used.
 
 ## Session
 
-`019ff849-fdf6-7801-9095-6f33dfbc9a85`. Proposal and final response are stored
-beside this file. Raw JSONL was captured at `/tmp/aws-v2-codex-*.jsonl`.
+Codex CLI `0.147.0`, thread `019ff8b6-d377-7000-94a9-b15ea1c04289`.
 
 ## Skill hash
 
-`5924650756e3af5379f461ca6aaf5aae55a8323df946df4d740ef0019d7026cb`
+`7587ac949f3e7a10bbf639f7e7d17275e5b5df0c0ffd8298de7ae82fe9376ee4`
 
 ## Approval boundary
 
-Before approval the fixture remained empty. The proposal asked to create exactly
-`AGENTS.md` and `CLAUDE.md`; after approval only those files existed.
-
-Reproduce the source state with `fixture=$(mktemp -d)` and run
-`scripts/inspect-project.sh "$fixture"`. The proposal contains the captured
-initial facts and ends with the exact edit-approval question; the exact
-post-write inspector output is `inspector-output-after.txt`.
+The proposal independently ran the inspector, made no writes, proposed exactly
+`AGENTS.md` and `CLAUDE.md`, and ended with the exact approval question. The
+recorded approval authorized only those contents. Final file inventory contains
+only the two approved files.
 
 ## Assertions
 
-`validate-generated.py` returned `generated artifacts: ok`; the artifact test
-reruns it and checks the durable workflow plus thin Claude import.
+The committed structural test validates every workflow component, thin Claude
+import, exact current skill hash, final file hashes, and validator success.
+Raw Codex events are committed as `proposal.raw.jsonl` and `write.raw.jsonl`.

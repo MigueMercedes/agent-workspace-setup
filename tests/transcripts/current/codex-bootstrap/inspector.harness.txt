@@ -1,5 +1,5 @@
 ## Repository
-Route candidate: adopt
+Route candidate: bootstrap
 
 ## Git
 Repository: no
@@ -9,8 +9,6 @@ HEAD: not-applicable
 Default branch candidate: not-applicable
 
 ## Agent files
-AGENTS.md
-CLAUDE.md
 
 ## Native agent files
 
@@ -19,4 +17,4 @@ CLAUDE.md
 ## Automation
 
 ## Candidate commands
-Route candidate: adopt
+Route candidate: bootstrap

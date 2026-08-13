@@ -1,15 +1,18 @@
-Created only:
+Created only [AGENTS.md](/tmp/aws-v3-codex-bootstrap-empty/AGENTS.md) and [CLAUDE.md](/tmp/aws-v3-codex-bootstrap-empty/CLAUDE.md).
 
-- [AGENTS.md](/tmp/aws-v2-codex-bootstrap.k33P2o/AGENTS.md)
-- [CLAUDE.md](/tmp/aws-v2-codex-bootstrap.k33P2o/CLAUDE.md)
+Verified by Codex:
 
-Validation results:
+- Skill validator: `generated artifacts: ok`
+- Exact file set: only the two approved files
+- `CLAUDE.md`: exact thin `@AGENTS.md` import, resolved successfully
+- Required workflow coverage: passed
+- Unverified runtime values: none pinned
+- Likely-secret pattern scan: passed
+- Conflicting or duplicated rules: none found
 
-- Both file-existence checks: exit `0`
-- Generated-artifact validator: `generated artifacts: ok`, exit `0`
-- Project inspector: exit `0`; detected both files and no native agent files
-- Claude `@AGENTS.md` import: resolved, exit `0`
-- Likely-secret scan: no matches
-- Final directory inventory: exactly `AGENTS.md` and `CLAUDE.md`
-- Unverified items: none applicable
-- Installations performed: none
+Unverified:
+
+- No build, test, lint, or Git checks exist for this empty non-Git project.
+- Any later external harness checks have not run and are not included in Codex’s results.
+
+There are no pending installations, files, credentials, or configuration actions. Do you approve performing no installation actions?

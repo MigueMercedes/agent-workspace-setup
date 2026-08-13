@@ -1,0 +1,1 @@
+I approve creating exactly AGENTS.md and CLAUDE.md with the exact contents proposed, and no other files or changes. Apply only those approved edits in `/tmp/aws-v3-codex-bootstrap-empty`, run available validation, and distinguish Codex-executed checks from any later external harness checks.

@@ -1,0 +1,29 @@
+$agent-workspace-setup Prepare the exact directory `/tmp/aws-v3-codex-bootstrap-empty` for Codex and Claude Code using the project workflow. Produce the complete proposal and final exact edit-approval question, but make no writes until approval.
+
+The external harness ran this exact inspector command before invocation:
+`/tmp/agent-workspace-setup-v2.yYoRCo/skills/agent-workspace-setup/scripts/inspect-project.sh /tmp/aws-v3-codex-bootstrap-empty`
+
+Exact inspector output:
+
+## Repository
+Route candidate: bootstrap
+
+## Git
+Repository: no
+Worktree: not-applicable
+Branch: not-applicable
+HEAD: not-applicable
+Default branch candidate: not-applicable
+
+## Agent files
+
+## Native agent files
+
+## Manifests
+
+## Automation
+
+## Candidate commands
+Route candidate: bootstrap
+
+Use this as harness evidence and state whether you independently ran the inspector. Propose only AGENTS.md and CLAUDE.md unless real inspected evidence requires another target. The proposed AGENTS.md workflow must make durable: orchestrator ownership; trivial/small direct-work threshold; bounded delegation contracts; non-overlapping parallelism; validated base/dependency rules; semantic lowest/balanced/highest routing and escalation; independent specification and quality reviews; at most two same-tier correction passes; whole-change review; fresh final verification with explicit Verified and Unverified reporting; and conservative owned-worktree cleanup. CLAUDE.md must remain a thin import. Do not pin unverified runtime values.

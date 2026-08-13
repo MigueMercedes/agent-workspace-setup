@@ -8,6 +8,16 @@ ROOT = Path(__file__).resolve().parents[1]
 CURRENT = ROOT / "tests/transcripts/current"
 VALIDATOR = ROOT / "skills/agent-workspace-setup/scripts/validate-generated.py"
 
+
+def skill_hash() -> str:
+    files = sorted((ROOT / "skills/agent-workspace-setup").rglob("*"))
+    records = []
+    for path in files:
+        if path.is_file():
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            records.append(f"{digest}  {path.relative_to(ROOT)}\n".encode())
+    return hashlib.sha256(b"".join(records)).hexdigest()
+
 def sections(text: str) -> dict[str, str]:
     matches = list(re.finditer(r"(?m)^#{2,3} (.+)$", text))
     return {
@@ -21,9 +31,9 @@ def require_workflow(text: str, case: str) -> None:
     headings = sections(text)
     checks = {
         "orchestrator ownership": r"owns .*(decomposition|requirements).*(routing|review).*(verification|synthesis)",
-        "direct-work threshold": r"(trivial|small) work .*(orchestrator|main agent)",
+        "direct-work threshold": r"trivial.*small.*work.*(orchestrator|main agent)",
         "delegation contract": r"inputs.*allowed files.*expected output.*verification.*stop condition",
-        "parallelism boundary": r"parallel.*(independent|no dependency).*(non-overlapping|no overlapping)",
+        "parallelism boundary": r"parallel.*(independent|no dependency).*(non-overlapping|no overlapping|no overlap)",
         "base dependencies": r"(base|parent) commit.*dependenc",
         "semantic routing": r"lowest supported.*balanced.*highest justified supported",
         "escalation": r"escalat.*(fails twice|two)",
@@ -61,5 +71,6 @@ for case in ("codex-bootstrap", "claude-adopt"):
     evidence = (CURRENT / case / "evidence.md").read_text()
     for field in ("Fixture", "Invocation", "Session", "Skill hash", "Approval boundary", "Assertions"):
         assert f"## {field}" in evidence, (case, field)
+    assert skill_hash() in evidence, (case, "stale skill hash")
 
 print("current E2E evidence: ok")

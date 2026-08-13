@@ -1,0 +1,1 @@
+I approve exactly the proposed edits to AGENTS.md and/or CLAUDE.md, and no other files. Preserve every strict baseline rule literally and preserve user-notes.txt byte-for-byte. Apply only those proposed edits. Run available validation; distinguish checks run by Claude from checks run later by the external harness, and report every blocked or unverified check.

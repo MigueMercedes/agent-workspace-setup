@@ -8,9 +8,12 @@ ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR = ROOT / "skills/agent-workspace-setup/scripts/validate-generated.py"
 
 
-def run(root: Path) -> subprocess.CompletedProcess[str]:
+def run(root: Path, constraints: Path | None = None) -> subprocess.CompletedProcess[str]:
+    command = [sys.executable, str(VALIDATOR), str(root)]
+    if constraints:
+        command.extend(["--constraints", str(constraints)])
     return subprocess.run(
-        [sys.executable, str(VALIDATOR), str(root)],
+        command,
         text=True,
         capture_output=True,
     )
@@ -52,7 +55,7 @@ with tempfile.TemporaryDirectory() as temp:
     agent.parent.mkdir(parents=True)
     agent.write_text(
         'name="reviewer"\ndescription="Review"\ndeveloper_instructions="Check risks"\n'
-        'model="verified-model"\nmodel_reasoning_effort="high"\nsandbox_mode="read-only"\n',
+        ,
         encoding="utf-8",
     )
     result = run(root)
@@ -64,15 +67,29 @@ with tempfile.TemporaryDirectory() as temp:
 with tempfile.TemporaryDirectory() as temp:
     root = Path(temp)
     write_shared(root)
+    agent = root / ".codex/agents/reviewer.toml"
+    agent.parent.mkdir(parents=True)
+    agent.write_text(
+        'name="reviewer"\ndescription="Review"\ndeveloper_instructions="Review"\n'
+        'model="runtime-model"\nmodel_reasoning_effort="high"\nsandbox_mode="read-only"\n'
+    )
+    assert run(root).returncode != 0
+    constraints = root / "constraints.json"
+    constraints.write_text(
+        '{"codex_models":["runtime-model"],"codex_efforts":["high"],'
+        '"codex_sandbox_modes":["read-only"]}'
+    )
+    assert run(root, constraints).returncode == 0
+
+with tempfile.TemporaryDirectory() as temp:
+    root = Path(temp)
+    write_shared(root)
     agent = root / ".claude/agents/reviewer.md"
     agent.parent.mkdir(parents=True)
     agent.write_text(
         """---
 name: reviewer
 description: Reviews completed changes
-model: inherit
-effort: high
-isolation: worktree
 ---
 
 Review the implementation independently.
@@ -84,5 +101,16 @@ Review the implementation independently.
     agent.write_text("---\nname: reviewer\ndescription: Reviews\n---\n", encoding="utf-8")
     result = run(root)
     assert result.returncode != 0
+
+with tempfile.TemporaryDirectory() as temp:
+    root = Path(temp)
+    write_shared(root)
+    agent = root / ".claude/agents/reviewer.md"
+    agent.parent.mkdir(parents=True)
+    agent.write_text("---\nname: reviewer\ndescription: Review\nmodel: sonnet\neffort: high\n---\nReview.\n")
+    assert run(root).returncode != 0
+    constraints = root / "constraints.json"
+    constraints.write_text('{"claude_models":["sonnet"],"claude_efforts":["high"]}')
+    assert run(root, constraints).returncode == 0
 
 print("generated artifact validation: ok")

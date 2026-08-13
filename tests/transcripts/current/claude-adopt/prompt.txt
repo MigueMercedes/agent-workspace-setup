@@ -1,0 +1,34 @@
+/agent-workspace-setup Adopt the repository `/tmp/aws-v2-claude-adopt-r2` for Codex and Claude Code. Preserve every existing strict rule and preserve `user-notes.txt` byte-for-byte. Produce a complete proposal and final exact edit-approval question, but make no edits until approval.
+
+Your Bash tool may be denied. The external test harness ran this exact command before this prompt:
+`/tmp/agent-workspace-setup-v2.yYoRCo/skills/agent-workspace-setup/scripts/inspect-project.sh /tmp/aws-v2-claude-adopt-r2`
+
+Exact harness output (this is harness evidence, not a claim that Claude ran Bash):
+
+## Repository
+Route candidate: adopt
+
+## Git
+Repository: yes
+Worktree: dirty
+Branch: main
+HEAD: 59e99cee9b7ba93e1832630690ca8cbacd00c643
+Default branch candidate: main
+
+## Agent files
+AGENTS.md
+CLAUDE.md
+
+## Native agent files
+
+## Manifests
+package.json
+
+## Automation
+
+## Candidate commands
+lint: node -e "process.exit(0)"
+test: node -e "process.exit(0)"
+Route candidate: adopt
+
+In the proposed generated workflow, explicitly include completion reporting of every unverified or blocked check. State exactly whether you used the harness evidence or independently executed the inspector. Propose edits only to AGENTS.md and/or CLAUDE.md as necessary.

@@ -83,7 +83,9 @@ For each delegated implementation task:
 4. After all task reviews pass, run an independent whole-change review across
    interactions between tasks.
 5. The orchestrator synthesizes results and performs fresh verification against
-   the final working tree before claiming completion.
+   the final working tree before claiming completion. The completion report
+   lists checks actually run and every required check or behavior that remains
+   unverified; blocked or skipped checks are never reported as success.
 
 After integration, remove only owned, completed, and integrated worktrees that
 are clean and no longer needed. Preserve dirty, unmerged, foreign, or ambiguous
@@ -95,15 +97,17 @@ The proposal must say whether native project agent files add value:
 
 - **Codex:** propose `.codex/agents/*.toml` only after verifying local support
   and exact model/effort availability. Each file requires string values for
-  `name`, `description`, and `developer_instructions`; when routing is pinned it
-  also records verified `model`, `model_reasoning_effort`, and `sandbox_mode`.
+  `name`, `description`, and `developer_instructions`. `model`,
+  `model_reasoning_effort`, and `sandbox_mode` are optional and appear only when
+  their exact values were verified for the effective runtime.
   `sandbox_mode` controls command permissions, not Git worktree isolation.
   Otherwise keep routing as durable `AGENTS.md` instructions and state that no
   Codex agent files are needed.
 - **Claude Code:** keep `CLAUDE.md` thin and importing `AGENTS.md`. Propose
   `.claude/agents/*.md` only when repeated project roles justify them. Each file
   requires lowercase-hyphen `name`, `description`, and a non-empty Markdown
-  prompt body; when routing is pinned it records verified `model` and `effort`.
+  prompt body. `model`, `effort`, and `isolation` are optional and appear only
+  when their exact values were verified for the effective runtime.
   Use `isolation: worktree` only when Claude's default-branch base equals the
   recorded task base; otherwise use an orchestrator-created explicit worktree.
   Otherwise state that no Claude subagent files are needed.
@@ -111,8 +115,11 @@ The proposal must say whether native project agent files add value:
 Before proposing native agent files, stage their exact candidate contents in a
 temporary directory with candidate `AGENTS.md` and `CLAUDE.md`, run
 `scripts/validate-generated.py <temporary-directory>`, then remove the staging
-directory. This validates the proposal without mutating the repository. Run the
-same validator against the repository after approved writes.
+directory. For optional runtime values, pass `--constraints` with a temporary
+JSON file containing the exact inspected allowlists (`codex_models`,
+`codex_efforts`, `codex_sandbox_modes`, `claude_models`, `claude_efforts`, and
+`claude_isolations` as applicable). Without matching constraints the validator
+rejects pinned values. Run the same validator and constraints after approval.
 
 Runtime files are never copied across runtimes. Third-party skills, plugins,
 MCP servers, downloads, and credential-dependent setup stay in the separate

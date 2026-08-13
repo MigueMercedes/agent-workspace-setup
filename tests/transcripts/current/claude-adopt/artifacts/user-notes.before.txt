@@ -1,2 +1,2 @@
-committed baseline
+baseline note
 private uncommitted user work

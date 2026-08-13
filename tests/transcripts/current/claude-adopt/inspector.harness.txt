@@ -4,9 +4,9 @@ Route candidate: adopt
 ## Git
 Repository: yes
 Worktree: dirty
-Branch: master
-HEAD: 289361cd50107277ead72cafd1ec6a140a4c6a88
-Default branch candidate: master
+Branch: main
+HEAD: 59e99cee9b7ba93e1832630690ca8cbacd00c643
+Default branch candidate: main
 
 ## Agent files
 AGENTS.md

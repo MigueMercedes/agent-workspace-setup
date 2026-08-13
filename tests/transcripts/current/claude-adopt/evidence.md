@@ -1,35 +1,33 @@
-# Claude Code adopt E2E
+# Claude Code adopt E2E round 2
 
 ## Fixture
 
-Disposable Git repo `/tmp/aws-v2-claude-adopt.92xtjQ`, baseline commit
-`289361cd50107277ead72cafd1ec6a140a4c6a88`. Existing rules required failing-test
-first and test/lint gates. `user-notes.txt` was dirty before invocation. Claude
-Code was `2.1.229`; the skill was project-local under `.claude/skills/`.
+Disposable Git repo `/tmp/aws-v2-claude-adopt-r2`, baseline commit
+`59e99cee9b7ba93e1832630690ca8cbacd00c643`, branch/default branch `main`.
+It contained three strict rules and dirty `user-notes.txt` before invocation.
 
 ## Invocation
 
-Proposal: `claude -p --output-format json --permission-mode acceptEdits --tools Read,Bash,Edit,Write,Glob,Grep --session-id 4d5e9f84-85a4-4b43-9cb0-27f62ed85749 '/agent-workspace-setup ... make no edits until approval'`.
-
-Write: the same command with `--resume` and approval to edit only `AGENTS.md`.
+Exact commands and complete prompts are in `invocation.md`, `prompt.txt`, and
+`approval.txt`; raw runtime results are `proposal.raw.json` and `write.raw.json`.
 
 ## Session
 
-`4d5e9f84-85a4-4b43-9cb0-27f62ed85749`. Proposal and response are stored beside
-this file. Claude reported Bash denied; the harness independently ran the
-validator, `npm test`, and `npm run lint`, all exit 0.
+Claude Code `2.1.229`, session `8ed0f289-33b2-48c8-a0c8-2e2ec1bf3569`.
 
 ## Skill hash
 
-`5924650756e3af5379f461ca6aaf5aae55a8323df946df4d740ef0019d7026cb`
+`7587ac949f3e7a10bbf639f7e7d17275e5b5df0c0ffd8298de7ae82fe9376ee4`
 
 ## Approval boundary
 
-Preapproval hashes were unchanged. After approval, strict rules remained
-literal, `CLAUDE.md` was unchanged, and the dirty file retained SHA-256
-`7eb81975aeb4d6544214d6a1ba411cee07f1305cd98b4215e82415e7a16d3148`.
+Claude used harness inspector evidence and explicitly stated Bash was denied.
+The proposal made no edits and ended with an exact question to append the shown
+block only to `AGENTS.md`. The exact approval authorized only proposed
+`AGENTS.md`/`CLAUDE.md` edits; Claude changed only `AGENTS.md`.
 
 ## Assertions
 
-The artifact test validates generated instructions, requires the strict rules,
-and compares before/after dirty-file bytes.
+Structural tests require every workflow component, every strict baseline rule,
+thin `CLAUDE.md`, and byte-identical dirty notes. Harness and Claude execution
+are separately labeled in `harness.md` and raw JSON permission denials.
